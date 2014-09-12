@@ -1,0 +1,67 @@
+
+<style>
+  
+  #grid {    
+    display: grid;
+    grid-template-columns: 450px 200px auto;
+    grid-template-rows: 100px 100px auto;
+/*
+    grid-columns: 1fr 1fr 1fr 1fr;
+    grid-rows: 1fr 1fr 1fr 1fr;
+*/
+  }
+  .el {
+    grid-column-start: 3;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+  }
+  #el1 {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    height: 300px;
+    background-image: url('http://www.vetprofessionals.com/catprofessional/images/home-cat.jpg');
+    background-height: 300px;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  #el2 {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 2;
+    grid-row-end: 3;
+  }
+  
+  @media (max-width: 1274px) {
+      .el {
+        grid-column-start: 3;
+        grid-column-end: 4;
+        grid-row-start: 2;
+        grid-row-end: 3;
+      }
+      #el1 {
+        grid-column-start: 1;
+        grid-column-end: 2;
+        grid-row-start: 3;
+        grid-row-end: 4;
+        background-image: url('http://blog.petspyjamas.com/uploads/2013/01/cat.jpg');
+      }
+      #el2 {
+        grid-column-start: 3;
+        grid-column-end: 3;
+        grid-row-start: 1;
+        grid-row-end: 2;
+      }
+  }
+  
+</style>
+
+<div id="grid">
+
+  <div id="el1">weeeeee</div>
+  <div id="el2">hello</div>
+  <div class="el">world</div>
+
+</div>
