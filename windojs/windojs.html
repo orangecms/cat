@@ -1,0 +1,99 @@
+<style>
+  
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .win {
+    border: 1px solid orange;
+  }
+  .bar {
+    background-color: green;
+  }
+  .foo {
+    background-color: blue;
+  }
+  
+</style>
+
+
+<div id="main">
+  
+</div>
+
+<script>
+  
+  var getEl = function(id) { return document.getElementById(id); },
+      divEl = function() { return document.createElement("div"); },
+      addEl = function(parent, el) { var e = document.createElement(el); parent.appendChild(e); return parent; },
+      putEl = function(parent, child) { parent.appendChild(child); return parent; };
+  
+  var windojs = {
+    id: "win1",
+    width: 200,
+    height: 120,
+    pos: { x: 0, y: 0 },
+    win: divEl(),
+    bar: divEl(),
+    foo: divEl(),
+    attach: function(e) {
+      /* setup */
+      this.win.setAttribute("id", this.id);
+      this.win.setAttribute("class", "win");
+      this.win.style.width  = this.width+"px";
+      this.win.style.height = this.height+"px";
+      this.win.style.left = this.pos.x;
+      this.win.style.top  = this.pos.y;
+      this.win.style.position = "absolute";
+      this.bar.setAttribute("class", "bar");
+      this.bar.style.width   = this.width-6+"px";
+      this.bar.style.height  = "16px";
+      this.bar.style.padding = "3px";
+      this.foo.setAttribute("class", "foo");
+      this.foo.style.width = this.width-6+"px";
+      this.foo.style.height = this.height-28+"px";
+      this.foo.style.padding = "3px";
+      putEl(this.win, this.bar);
+      putEl(this.win, this.foo);
+      putEl(getEl(e), this.win);
+      /* mouse events */
+      var win = this;
+      this.bar.onmousedown = function (ev) {
+        var x = ev.clientX, y = ev.clientY;
+        document.body.onmousemove = function(ev) {
+          win.pos.x += ev.clientX-x; x = ev.clientX;
+          win.pos.y += ev.clientY-y; y = ev.clientY;
+          win.win.style.left = win.pos.x+"px";
+          win.win.style.top  = win.pos.y+"px";
+          document.body.onmouseup = function() {
+            document.body.onmousemove = null;
+          }
+        }
+      }
+      return this;
+    },
+    show: function() {
+      el(this.id).style.display = "block";
+    },
+    hide: function() {
+      el(this.id).style.display = "none";
+    },
+    title: function(h) {
+      this.bar.innerHTML = h;
+      return this;
+    },
+    body: function(h) {
+      this.foo.innerHTML = h;
+      return this;
+    }
+  }
+  
+  var win1 = Object.create(windojs);
+  win1.attach("main").title("win1").body("hello");
+  
+//  var win2 = Object.create(windojs);
+//  win2.attach("main").title("win2").body("world");
+  
+</script>

@@ -1,0 +1,230 @@
+<html>
+<head>
+<title>GriLaMa - a Grid Layout Manager</title>
+    
+<style>
+  
+  body {
+    background-color: #e0e0e0;
+  }
+
+  #grid-wrapper {
+    position: absolute;
+    top: 50px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    padding: 5px;
+  }
+  
+  button {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  grid {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+  }
+  
+  tile {
+    width: 100%;
+    height: 100%;
+    margin: 3px;
+    border: 1px solid orange;
+  }
+
+  .content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-align: center;
+    border: 1px solid orange;
+    color: lime;
+  }
+
+  .middle {
+    height: 20px;
+    width: 80px;
+    margin-top: -10px;
+    margin-left: -40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: black;
+    text-transform: uppercase;
+    font-size: 16px;
+  }
+  
+  .green {
+    background-color: green;
+  }
+  
+  .red {
+    background-color: red;
+  }
+  
+</style>
+
+<script>
+  
+  var gridEl = function() { return document.createElement("grid"); };
+  var tileEl = function() { return document.createElement("tile"); };
+  var divEl = function(h) {
+    var el = document.createElement("div");
+    el.innerHTML = h;
+    el.className = "content";
+    return el;
+  };
+  var randomColor = function() { return '#'+Math.floor(Math.random()*16777215).toString(16); }
+  
+  function tile (id, pos, content) {
+    var T = this;
+    T.id = id;
+    T.rect = {x1: 0, x2: 0, y1: 0, y2: 0};
+    T.root = tileEl();
+    T.content = content;
+    T.content.style.backgroundColor = randomColor();
+    T.root.appendChild(T.content);
+    return T;
+  }
+
+  function grid(id, parent) {
+    var T = this;
+    T.parent = parent;
+    T.id = id;
+    T.grid = gridEl();
+    T.grid.setAttribute('id', 'grid'+id);
+    T.parent.appendChild(T.grid);
+    T.rect = {x1: 0, x2: 600, y1: 0, y2: 200};
+    T.rows = 
+    T.tiles = [];
+    T.addTile = function(content) {
+      var newId = T.tiles.length;
+      if (content === undefined) {
+        content = divEl('<span class="middle">tile '+(newId+1)+'</span>');
+      }
+      var t = new tile(newId, null, content);
+      T.tiles.push(t);
+      t.root.setAttribute('id', 'grid'+T.id+'tile'+(newId+1));
+      T.grid.appendChild(t.root);
+      T.refresh();
+    }
+    T.remTile = function(id) {
+      var lastId = T.tiles.length-1;
+      T.grid.removeChild(T.tiles[lastId].root);
+      T.tiles.splice(lastId, 1);
+      T.refresh();
+    }
+    T.refresh = function() {
+      var numberOfTiles = T.tiles.length;
+      /* calculate rows and colums */
+      var exponent = Math.ceil(Math.log(numberOfTiles)/Math.log(2));
+      var maxTiles = Math.pow(2, exponent);
+//      console.log("exponent: "+exponent);
+      /* TODO: get viewport */
+      var landscape = T.grid.offsetWidth>T.grid.offsetHeight;
+      if (landscape) {
+        T.rows = Math.floor(Math.sqrt(maxTiles));
+        T.cols = (exponent%2==0) ? T.rows : T.rows*2;
+      } else {
+        T.cols = Math.floor(Math.sqrt(maxTiles));
+        T.rows = (exponent%2==0) ? T.cols : T.cols*2;
+      }
+      // debug
+      //console.log(" rows: "+T.rows+" cols: "+T.cols);
+      /* set css for rows and columns */
+      T.grid.style.gridTemplateColumns = '';
+      T.grid.style.gridTemplateRows    = '';
+      for (i=0; i<T.cols; i++) T.grid.style.gridTemplateColumns += (100/T.cols)+'%';
+      for (i=0; i<T.rows; i++) T.grid.style.gridTemplateRows    += (100/T.rows)+'%';
+      /* calculate tiles */
+      var freeTiles = maxTiles-numberOfTiles;
+      // debug
+      //console.log(freeTiles, maxTiles);
+      var i;
+      /* 1x1 tiles */
+      for (i=0; i<numberOfTiles-freeTiles; i++) {
+        // upper left
+        if (landscape) {
+          T.tiles[i].rect.x1 = (i % T.cols) + 1;
+          T.tiles[i].rect.y1 = Math.floor(i/T.cols) + 1;
+        } else {
+          T.tiles[i].rect.x1 = Math.floor(i/T.rows) + 1;
+          T.tiles[i].rect.y1 = (i % T.rows) + 1;
+        }
+        // lower right
+        T.tiles[i].rect.x2 = T.tiles[i].rect.x1 + 1;
+        T.tiles[i].rect.y2 = T.tiles[i].rect.y1 + 1;
+        // debug
+        //console.log(T.tiles[i].rect);
+        T.tiles[i].root.style.gridColumnStart = T.tiles[i].rect.x1;
+        T.tiles[i].root.style.gridColumnEnd   = T.tiles[i].rect.x2;
+        T.tiles[i].root.style.gridRowStart    = T.tiles[i].rect.y1;
+        T.tiles[i].root.style.gridRowEnd      = T.tiles[i].rect.y2;
+      }
+      /* 1x2 tiles */
+      for (var j=0; j<freeTiles; j++) {
+        if (landscape) {
+          // upper left
+          T.tiles[i+j].rect.x1 = ((i+j*2) % T.cols) + 1;
+          T.tiles[i+j].rect.y1 = Math.floor((i+j*2)/T.cols) + 1;
+          // lower right
+          T.tiles[i+j].rect.x2 = T.tiles[i+j].rect.x1 + 2;
+          T.tiles[i+j].rect.y2 = T.tiles[i+j].rect.y1 + 1;
+        } else {
+          // upper left
+          T.tiles[i+j].rect.x1 = Math.floor((i+j*2)/T.rows) + 1;
+          T.tiles[i+j].rect.y1 = ((i+j*2) % T.rows) + 1;
+          // lower right
+          T.tiles[i+j].rect.x2 = T.tiles[i+j].rect.x1 + 1;
+          T.tiles[i+j].rect.y2 = T.tiles[i+j].rect.y1 + 2;
+        }
+        // debug
+        //console.log(T.tiles[i+j].rect);
+        T.tiles[i+j].root.style.gridColumnStart = T.tiles[i+j].rect.x1;
+        T.tiles[i+j].root.style.gridColumnEnd   = T.tiles[i+j].rect.x2;
+        T.tiles[i+j].root.style.gridRowStart    = T.tiles[i+j].rect.y1;
+        T.tiles[i+j].root.style.gridRowEnd      = T.tiles[i+j].rect.y2;
+      }
+      window.onresize = function() { T.refresh(); };
+    }
+  }
+  
+  var myGrid;
+  
+  window.onload = function() {
+    myGrid = new grid(1, document.getElementById("grid-wrapper"));
+    var numberOfTiles = 7;
+    for (i=0; i<numberOfTiles; i++) myGrid.addTile(divEl('<span class="middle">tile '+(i+1)+'</span>'));
+   
+    console.log(myGrid);    
+  }
+  
+</script>
+
+</head>
+
+<body>
+  We have tiles, yay! :) Use buttons to add/remove:
+  
+  <button class="green" onclick="myGrid.addTile();">+</button>
+  <button class="red"   onclick="myGrid.remTile();">-</button>
+  
+  <br />
+  known bugs: more than 17 tiles gets the wrong grid - gonna be fixed someday ;)
+
+  <div id="grid-wrapper"></div>
+  
+</body>
+  
+</html>
