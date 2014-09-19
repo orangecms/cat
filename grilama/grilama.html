@@ -1,5 +1,6 @@
 <html>
 <head>
+
 <title>GriLaMa - a Grid Layout Manager</title>
     
 <style>
@@ -73,6 +74,11 @@
     background-color: red;
   }
   
+  .cat {
+    color: pink;
+    font-size: 14px;
+  }
+  
 </style>
 
 <script>
@@ -111,7 +117,7 @@
     T.addTile = function(content) {
       var newId = T.tiles.length;
       if (content === undefined) {
-        content = divEl('<span class="middle">tile '+(newId+1)+'</span>');
+        content = divEl('<span class="middle">tile '+(newId+1)+' <span class="cat">'+cats[Math.floor(Math.random() * cats.length)]+'</span></span>');
       }
       var t = new tile(newId, null, content);
       T.tiles.push(t);
@@ -201,12 +207,14 @@
   }
   
   var myGrid;
+  var cats = ['&#x1F638', '&#x1F639', '&#x1F63A', '&#x1F63B', '&#x1F63C', '&#x1F63D', '&#x1F63E', '&#x1F63F', '&#x1F640'];
   
   window.onload = function() {
     myGrid = new grid(1, document.getElementById("grid-wrapper"));
     var numberOfTiles = 7;
-    for (i=0; i<numberOfTiles; i++) myGrid.addTile(divEl('<span class="middle">tile '+(i+1)+'</span>'));
-   
+    for (i=0; i<numberOfTiles; i++) {
+      myGrid.addTile(divEl('<span class="middle">tile '+(i+1)+' <span class="cat">'+cats[Math.floor(Math.random() * cats.length)]+'</span></span>'));
+    }   
     console.log(myGrid);    
   }
   
