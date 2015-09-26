@@ -1,0 +1,57 @@
+<html>
+<head>
+
+<style>
+
+button:before, button:after {
+  content: " ";
+  display: block;
+  height: 50%;
+  width: 120%;
+  margin-left: -13%;
+  background-color: rgba(200, 200, 200, .2);
+  background-blend-mode: multiply;
+  border-left: 5px solid orange;
+  border-right: 5px solid red;
+}
+
+button:before {
+  transform: skew(+30deg);
+  border-top-left-radius: 4px;
+  border-top: 5px solid green;
+  border-top-right-radius: 6px;
+}
+
+button {
+  height: 60px;
+  margin: 20px;
+  background: transparent;
+  border: 0;
+  z-index: -100;
+  line-height: 0;
+  font-size: 18px;
+  margin-left: 50px;
+}
+
+button:after {
+  transform: skew(-30deg);
+  border-bottom-left-radius: 4px;
+  border-bottom: 5px solid blue;
+  border-bottom-right-radius: 6px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div style="height: 100px;">
+  <button>
+    &#128049;
+    I'm a damn fancy button!
+    &#128049;
+  </button>
+</div>
+
+</body>
+</html>
