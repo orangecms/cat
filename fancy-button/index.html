@@ -9,20 +9,15 @@
 <style>
 
 button {
-  height: 60px;
+  height: 32px;
   margin: 20px 50px;
   z-index: 1;
   background: transparent;
   border: 0;
   line-height: 0;
-  font-family "Consolas", "Menlo", "Courier", monospace;
-  font-size: 18px;
-  font-weight: bold;
-  text-shadow: 2px 2px 0 #000;
-  color: #f8b600;
 }
 
-button:before, button:after {
+button::before, button::after {
   content: " ";
   display: block;
   height: 50%;
@@ -30,8 +25,7 @@ button:before, button:after {
   margin-left: -13%;
   z-index: -1;
   position: relative;
-  background-color: #133a37;
-  border: 5px solid #c04000;
+  border: 5px solid;
 }
 
 button::before {
@@ -46,22 +40,65 @@ button::after {
   border-radius: 0 0 4px 6px;
 }
 
+/** another button that points to the left */
+.btn-left {
+  font-family: monospace;
+}
+
+.btn-left::before, .btn-left::after {
+  background-color: white;
+}
+
+.btn-left::before {
+  transform: skew(-20deg);
+}
+
+.btn-left::after {
+  transform: skew(+20deg);
+}
+
+/** some configuration for the sake of a demo */
+.btn-fancy {
+  color: white;
+}
+
+.btn-fancy::before, .btn-fancy::after {
+  background-color: blue;
+}
+
+/** modified version for OrangeCMS */
+.btn-orangecms {
+  height: 60px;
+  font-family "Consolas", "Menlo", "Courier", monospace;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 2px 2px 0 #000;
+  color: #f8b600;
+}
+
+.btn-orangecms::before, .btn-orangecms::after {
+  background-color: #133a37;
+  border-color: #c04000;
+  border-width: 5px;
+}
+
 </style>
 
 </head>
 <body>
 
-<div style="height: 200px; background-color: black; display: flex; justify-content: space-around; flex-wrap: wrap;">
-  <button>
+<div style="background-color: black; display: flex; justify-content: space-around; flex-wrap: wrap;">
+  <button class="btn-orangecms">
     &#128049;
-    I'm a damn fancy button!
+    I'm a fancy button!
     &#128049;
   </button>
-  <button>
+  <button class="btn-fancy">
     &#128049;
     I'm another fancy button!
     &#128049;
   </button>
+  <button class="btn-left">&lt; I point to the left &lt;</button
 </div>
 
 </body>
