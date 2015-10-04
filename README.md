@@ -1,5 +1,9 @@
-## playground / demo repo for HTML/CSS/JS stuff
+## About
+This is a playground / demo repo for HTML/CSS/JS stuff.
 
+In case of an emergency: `bash -c 'while true; do wget "http://thecatapi.com/api/image/get" --content-disposition; done;'`
+
+## Preview links
 Fancy button - this is the most awesome button ever seen
 (http://htmlpreview.github.io/?https://github.com/orangecms/cat/blob/master/fancy-button/index.html)
 
