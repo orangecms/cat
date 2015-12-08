@@ -106,6 +106,8 @@
     T.root = tileEl();
     T.content = content;
     T.content.style.backgroundColor = randomColor();
+    T.content.style.background = "url('http://thecatapi.com/api/image/get?"+id+"')";
+    T.content.style.backgroundSize = "cover";
     T.root.appendChild(T.content);
     return T;
   }
