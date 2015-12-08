@@ -12,11 +12,16 @@ Demo: (http://htmlpreview.github.io/?https://github.com/orangecms/cat/blob/maste
 
 Would love to be used one day, e.g. in combination with Web Elements.
 
+#### preview
+
+![GriLaMa preview](preview.png)
+
 #### current features
 
 - generate quadratic or rectangular grid, based on number of tiles
 - adjust to portrait / landscape sized parent
 - add and remove tiles
+- query thecatapi.com for awesome background images
 
 #### TODO
 
