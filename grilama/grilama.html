@@ -59,14 +59,15 @@
     color: lime;
   }
 
-  .middle {
+  .title {
     height: 20px;
     width: 80px;
-    margin-top: -10px;
-    margin-left: -40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    right: 0;
     background-color: black;
     text-transform: uppercase;
     font-size: 16px;
@@ -80,7 +81,8 @@
     background-color: red;
   }
   
-  .cat {
+  .catface {
+    margin-left: 3px;
     color: pink;
     font-size: 14px;
   }
@@ -125,7 +127,7 @@
     T.addTile = function(content) {
       var newId = T.tiles.length;
       if (content === undefined) {
-        content = divEl('<span class="middle">tile '+(newId+1)+' <span class="cat">'+cats[Math.floor(Math.random() * cats.length)]+'</span></span>');
+        content = divEl('<span class="title">tile '+(newId+1)+' <span class="catface">'+cats[Math.floor(Math.random() * cats.length)]+'</span></span>');
       }
       var t = new tile(newId, null, content);
       T.tiles.push(t);
@@ -233,7 +235,7 @@
     myGrid = new grid(1, document.getElementById("grid-wrapper"));
     var numberOfTiles = 7;
     for (i=0; i<numberOfTiles; i++) {
-      myGrid.addTile(divEl('<span class="middle">tile '+(i+1)+' <span class="cat">'+cats[Math.floor(Math.random() * cats.length)]+'</span></span>'));
+      myGrid.addTile(divEl('<span class="title">tile '+(i+1)+' <span class="catface">'+cats[Math.floor(Math.random() * cats.length)]+'</span></span>'));
     }   
     console.log(myGrid);    
   }
